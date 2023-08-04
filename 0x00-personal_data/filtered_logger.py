@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """regex-ing"""
 
-import re, logging
+import re
+import logging
 from typing import List
 
 
@@ -22,16 +23,12 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-
     def __init__(self, fields: List[str]):
         """ Constructor method """
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = list(fields)
 
-
     def format(self, record: logging.LogRecord) -> str:
         """ Filters values in incoming log records using filter_datum """
         return filter_datum(self.fields, self.REDACTION,
                             super().format(record), self.SEPARATOR)
-
-
