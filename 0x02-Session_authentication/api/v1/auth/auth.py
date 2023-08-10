@@ -2,6 +2,7 @@
 """ Module of Authentication
 """
 from typing import List, TypeVar
+from os import getenv
 
 
 class Auth:
@@ -42,4 +43,6 @@ class Auth:
         """
         if request is None:
             return None
-        return request.cookies.get('_my_session_id')
+
+        SESSION_NAME = getenv('SESSION_NAME')
+        return request.cookies.get(SESSION_NAME)
