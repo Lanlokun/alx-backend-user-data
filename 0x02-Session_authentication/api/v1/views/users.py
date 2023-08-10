@@ -69,7 +69,8 @@ def create_user() -> str:
         rj = request.get_json()
     except Exception as e:
         rj = None
-        
+        print("Can't parse JSON: {}".format(e))
+
     if rj is None:
         error_msg = "Wrong format"
     if error_msg is None and rj.get("email", "") == "":
@@ -113,6 +114,7 @@ def update_user(user_id: str = None) -> str:
         rj = request.get_json()
     except Exception as e:
         rj = None
+        print("Can't parse JSON: {}".format(e))
 
     if user_id == 'me' and request.current_user is None:
         abort(404)
@@ -130,7 +132,7 @@ def update_user(user_id: str = None) -> str:
     if rj.get('last_name') is not None:
         user.last_name = rj.get('last_name')
     user.save()
-    
+
     return jsonify(user.to_json()), 200
 
 
