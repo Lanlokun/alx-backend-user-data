@@ -27,3 +27,13 @@ class SessionAuth(Auth):
         if session_id is None or type(session_id) is not str:
             return None
         return self.user_id_by_session_id.get(session_id)
+
+    def current_user(self, request=None):
+        """Current user.
+        """
+        session_cookie = self.session_cookie(request)
+        if session_cookie is None:
+            return None
+        user_id = self.user_id_for_session_id(session_cookie)
+        from models.user import User
+        return User.get(user_id)
