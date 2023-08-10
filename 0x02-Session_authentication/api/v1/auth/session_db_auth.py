@@ -10,7 +10,7 @@ class SessionDBAuth(SessionExpAuth):
     """SessionDBAuth class.
     """
 
-    def create_session(self, user_id: str = None) -> str:
+    def create_session(self, user_id=None):
         """Create session.
         """
         if user_id is None or type(user_id) is not str:
@@ -22,29 +22,24 @@ class SessionDBAuth(SessionExpAuth):
         user_session.save()
         return session_id
 
-    def user_id_for_session_id(self, session_id: str = None) -> str:
+    def user_id_for_session_id(self, session_id=None):
         """User ID for session ID.
         """
         if session_id is None or type(session_id) is not str:
-            return None
-        user_id = super().user_id_for_session_id(session_id)
-        if user_id is None:
             return None
         user_session = UserSession.search({'session_id': session_id})
         if len(user_session) == 0:
             return None
         user_session = user_session[0]
         if self.session_duration <= 0:
-            return user_id
-        if "created_at" not in user_session:
-            return None
-        created_at = user_session.get("created_at")
+            return user_session.user_id
+        created_at = user_session.created_at
         if created_at is None:
             return None
         expired_time = created_at + timedelta(seconds=self.session_duration)
         if expired_time < datetime.now():
             return None
-        return user_id
+        return user_session.user_id
 
     def destroy_session(self, request=None):
         """Destroy session.
@@ -53,9 +48,6 @@ class SessionDBAuth(SessionExpAuth):
             return False
         session_cookie = self.session_cookie(request)
         if session_cookie is None:
-            return False
-        user_id = self.user_id_for_session_id(session_cookie)
-        if user_id is None:
             return False
         user_session = UserSession.search({'session_id': session_cookie})
         if len(user_session) == 0:
