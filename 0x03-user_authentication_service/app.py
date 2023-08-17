@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ flask app for user authentication service """
 
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request
 from auth import Auth
 
 app = Flask(__name__)
@@ -16,22 +16,20 @@ def hello_world() -> str:
     return jsonify({"message": "Bienvenue"}), 200
 
 
-@app.route('/users', methods=['POST'])
-def register_user() -> str:
-    """Registers a new user if it does not exist before"""
-    try:
-        email = request.form['email']
-        password = request.form['password']
-    except KeyError:
-        abort(400)
-
+@app.route('/users', methods=['POST'], strict_slashes=False)
+def users() -> str:
+    """ POST /users
+    Register a user
+    Return:
+      - message
+    """
+    email = request.form.get('email')
+    password = request.form.get('password')
     try:
         user = Auth().register_user(email, password)
+        return jsonify({"email": user.email, "message": "user created"}), 200
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
-
-    msg = {"email": email, "message": "user created"}
-    return jsonify(msg)
 
 
 if __name__ == "__main__":
