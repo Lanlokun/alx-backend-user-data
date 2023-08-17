@@ -33,7 +33,7 @@ def users() -> str:
 
 
 @app.route('/sessions', methods=['POST'])
-def log_in() -> str:
+def login() -> str:
     """ Logs in a user and returns session ID """
     try:
         email = request.form['email']
