@@ -36,11 +36,12 @@ class DB:
 
         return user
     
-    def find_user_by(self, **kwargs) -> User:
-        """ Takes in arbitrary keyword arguments and returns the first row
-            found in the users table as filtered by the method’s input
+    def find_user(self, **kwargs) -> User:
+        """Takes in arbitrary keyword arguments and returns the first row
+        found in the users table as filtered by the method’s input arguments.
         """
         return self._session.query(User).filter_by(**kwargs).first()
+
     
     def update_user(self, user_id: int, **kwargs) -> None:
         """Locates the user to update, then will update the user’s attributes
