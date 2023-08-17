@@ -21,7 +21,7 @@ class User(Base):
         """Constructor.
         """
         super().__init__(*args, **kwargs)
-    
+
     def __str__(self):
         """String representation.
         """
