@@ -32,7 +32,7 @@ class Auth:
         except NoResultFound:
             hashed_password = _hash_password(password)
             return self._db.add_user(email, hashed_password)
-        
+
     def valid_login(self, email: str, password: str) -> bool:
         """ Check if login is valid """
         try:
@@ -41,4 +41,12 @@ class Auth:
         except NoResultFound:
             return False
 
-    
+    def create_session(self, email: str) -> str:
+        """ Create session """
+        try:
+            user = self._db.find_user_by(email=email)
+            session_id = _hash_password(user.email)
+            self._db.update_user(user.id, session_id=session_id)
+            return session_id
+        except NoResultFound:
+            return None
