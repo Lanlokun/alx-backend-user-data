@@ -1,7 +1,6 @@
 """DB module
 """
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
@@ -34,7 +33,6 @@ class DB:
         """
         self._session.close()
 
-    
     def add_user(self, email: str, hashed_password: str) -> User:
         """Save a user to the database
         """
@@ -42,4 +40,3 @@ class DB:
         self._session.add(user)
         self._session.commit()
         return None
- 
