@@ -52,7 +52,6 @@ def login() -> str:
     response.set_cookie("session_id", session_id)
 
     return response
-  
 
 
 if __name__ == "__main__":
