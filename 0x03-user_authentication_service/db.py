@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-"""DB module
-"""
+"""DB module"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-
 from user import Base, User
 
 
@@ -35,4 +33,5 @@ class DB:
         user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
         self._session.commit()
+
         return user
