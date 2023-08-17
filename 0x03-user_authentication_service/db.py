@@ -40,7 +40,7 @@ class DB:
     
     def find_user_by(self, **kwargs) -> User:
         """Takes in arbitrary keyword arguments and returns the first row
-        found in the users table as filtered by the method’s input arguments
+        found in the users table as filtered by the methods input arguments
         """
         if not kwargs:
             raise InvalidRequestError
