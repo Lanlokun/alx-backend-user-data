@@ -17,6 +17,7 @@ def is_valid(hashed_password: bytes, password: str) -> bool:
     """ Check if password is valid """
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password)
 
+
 def _generate_uuid() -> str:
     """ Generate a UUID """
     return str(uuid.uuid4())
@@ -30,13 +31,20 @@ class Auth:
         self._db = DB()
 
     def register_user(self, email: str, password: str) -> User:
-        """ Register a user """
+        """ Registers a user in the database
+        Returns: User Object
+        """
+
         try:
-            self._db.find_user_by(email=email)
-            raise ValueError("User {} already exists".format(email))
+            user = self._db.find_user_by(email=email)
         except NoResultFound:
             hashed_password = _hash_password(password)
-            return self._db.add_user(email, hashed_password)
+            user = self._db.add_user(email, hashed_password)
+
+            return user
+
+        else:
+            raise ValueError(f'User {email} already exists')
 
     def valid_login(self, email: str, password: str) -> bool:
         """ Check if login is valid """
