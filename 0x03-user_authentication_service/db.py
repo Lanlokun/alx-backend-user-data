@@ -35,7 +35,7 @@ class DB:
         self._session.close()
 
     
-    def add_user(self, email: str, hashed_password: str) -> None:
+    def add_user(self, email: str, hashed_password: str) -> User:
         """Save a user to the database
         """
         user = User(email=email, hashed_password=hashed_password)
