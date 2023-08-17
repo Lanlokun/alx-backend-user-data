@@ -28,7 +28,7 @@ def register_user() -> str:
         abort(400)
 
     try:
-        user = AUTH.register_user(email, password)
+        AUTH.register_user(email, password)
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
 
